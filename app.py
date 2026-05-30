@@ -6,6 +6,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
+import os
 
 # Page config
 st.set_page_config(
@@ -16,14 +17,23 @@ st.set_page_config(
 
 # Title
 st.title("🤖 EPM Documentation Chatbot")
-st.caption("340 pages EPM docs pe based AI Assistant")
+st.caption("351 pages EPM docs pe based AI Assistant")
 
 # API Key input
-groq_api_key = st.sidebar.text_input(
-    "Groq API Key",
-    type="password",
-    placeholder="gsk_xxxxxxxxxx"
-)
+# groq_api_key = st.sidebar.text_input(
+#     "Groq API Key",
+#     type="password",
+#     placeholder="gsk_xxxxxxxxxx"
+# )
+groq_api_key = os.getenv("GROQ_API_KEY")
+
+if not groq_api_key:
+    groq_api_key = st.sidebar.text_input(
+        "Groq API Key",
+        type="password",
+        placeholder="gsk_xxxxxxxxxx"
+    )
+
 
 # PDF load function — cache karo taki baar baar load na ho
 @st.cache_resource
