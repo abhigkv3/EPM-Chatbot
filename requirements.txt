@@ -3,8 +3,7 @@ langchain
 langchain-community
 langchain-groq
 langchain-text-splitters
-chromadb
+faiss-cpu
 pypdf
 sentence-transformers
 groq
-pysqlite3-binary
