@@ -7,3 +7,4 @@ chromadb
 pypdf
 sentence-transformers
 groq
+pysqlite3-binary
