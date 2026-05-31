@@ -28,7 +28,7 @@ if not groq_api_key:
         placeholder="gsk_xxxxxxxxxx"
     )
 
-# ✅ Casual messages handle karne ke liye
+# Casual messages
 CASUAL_INPUTS = [
     "ok", "okay", "hi", "hello", "hey", "thanks",
     "thank you", "shukriya", "theek hai", "haan",
@@ -131,28 +131,27 @@ if groq_api_key:
             st.markdown(user_input)
 
         with st.chat_message("assistant"):
-            # ✅ Casual check pehle
             if is_casual_message(user_input):
                 answer = get_casual_response(user_input)
                 st.markdown(answer)
             else:
                 with st.spinner("Soch raha hoon..."):
-    try:
-        relevant_chunks = retriever.invoke(user_input)
-        context = "\n\n".join([
-            chunk.page_content for chunk in relevant_chunks
-        ])
-        chain = prompt | llm | StrOutputParser()
-        answer = chain.invoke({
-            "context": context,
-            "question": user_input
-        })
-    except Exception as e:
-        if "rate_limit" in str(e).lower() or "429" in str(e):
-            answer = "⚠️ Too many requests! Please wait 1-2 minutes and try again."
-        else:
-            answer = "⚠️ Something went wrong. Please try again!"
-    st.markdown(answer)
+                    try:
+                        relevant_chunks = retriever.invoke(user_input)
+                        context = "\n\n".join([
+                            chunk.page_content for chunk in relevant_chunks
+                        ])
+                        chain = prompt | llm | StrOutputParser()
+                        answer = chain.invoke({
+                            "context": context,
+                            "question": user_input
+                        })
+                    except Exception as e:
+                        if "rate_limit" in str(e).lower() or "429" in str(e):
+                            answer = "⚠️ Too many requests! Please wait 1-2 minutes and try again."
+                        else:
+                            answer = "⚠️ Something went wrong. Please try again!"
+                    st.markdown(answer)
 
         st.session_state.messages.append({
             "role": "assistant",
